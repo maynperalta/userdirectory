@@ -17,26 +17,27 @@ const DataArea = () => {
       { name: "Name", width: "10%" },
       { name: "Phone", width: "20%" },
       { name: "Email", width: "20%" },
-      { name: "DOB", witdh: "10%" },
+      { name: "DOB", width: "10%" },
     ]
   });
-
+const mappedNames = developerState.headings.map((heading) => {
+  return heading.name
+})
+  console.log(mappedNames);
   // Sort by clicking on column header
   const handleSort = (heading) => {
     let currentOrder = developerState.headings
-      .filter((element) => element.name === heading)
-      .map((element) => element.order)
-      .toString();
-
-    if (currentOrder === "descend") {
-      currentOrder = "ascend";
-    } else if (currentOrder === "ascend") {
-      currentOrder = "descend";
+      .filter((element) => element.name.toLowerCase() === heading.toLowerCase())[0]
+      currentOrder.order = currentOrder.order || "ascend"
+    if (currentOrder.order === "descend") {
+      currentOrder.order = "ascend";
+    } else if (currentOrder.order === "ascend") {
+      currentOrder.order = "descend";
     }
 
   
     const compare = (a, b) => {
-      if (currentOrder === "ascend") {
+      if (currentOrder.order === "ascend") {
         if (a[heading] === undefined) {
           return 1;
         } else if (b[heading] === undefined) {
@@ -64,7 +65,7 @@ const DataArea = () => {
     };
     const sortedUsers = developerState.filteredUsers.sort(compare);
     const updateHeadings = developerState.headings.map((element) => {
-      element.order = element.name === heading ? currentOrder : element.order;
+      element.order = element.name === heading ? currentOrder.order : element.order;
       return element;
     });
     setDeveloperState({
